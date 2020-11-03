@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% static "static" as imagePath %}
+{% block content %}
+<h1>TP1: Rotten or Not?</h1>
+<p>
+    Utiliza esta herramienta para verificar si alguna fruta está podrida o no.  
+</p>
+<p>Frutas soportadas:</p>
+<ul>
+    <li>Manzanas</li>
+    <li>Bananas</li>
+    <li>Naranjas</li>
+    <li>Paltas</li>
+</ul>
+{% if category %}
+<div class="alert alert-{% if category == 'unknown' %}warning{% else %}success{% endif %}" role="alert" style="font-size: 16;">
+    Me parece que esto es una: <img src="/static/{%if is_rotten %}rotten{% else %}fresh{% endif %}{{category}}.png"/>
+    y que está <strong>{%if is_rotten %}podrida{% else %}fresca{% endif %}</strong>!!
+</div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="url">Url</label>
+        <input id="url" name="url" class="form-control" placeholder="Paste url to image">
+    </div>
+    <div class="form-group">
+        <label for="file">Subir archivo</label>
+        <input name="file" type="file" class="form-control-file" id="file" placeholder="Seleccionar imagen" accept="image/*">
+    </div>
+    <button type="submit" class="btn btn-primary">Clasificar</button>
+</form>
+{% endblock content %}
